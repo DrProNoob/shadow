@@ -10,6 +10,8 @@ Reality -> Shadow -> Diff -> Proof -> Human commit
 
 Built for the [WebMCP Challenge](https://webmcp.devpost.com/).
 
+**Live demo:** [shadow-theta-lake.vercel.app](https://shadow-theta-lake.vercel.app/)
+
 ## Synthetic demo disclosure
 
 **ORBIT is fictional.** Its 312 employees, 10 software subscriptions, usage records, contracts, prices, dependencies, and receipts are deterministic synthetic data. Recognizable product names are labels only; SHADOW has no connection to Adobe, Atlassian, Datadog, Figma, Grammarly, Loom, Miro, Notion, Slack, or Zoom and calls none of their APIs.
