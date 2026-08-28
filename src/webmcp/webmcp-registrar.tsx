@@ -26,7 +26,7 @@ export function useWebMcpRegistrar(
     const controller = new AbortController();
     let current = true;
     const tools = [
-      createWebMcpPingTool(store),
+      createWebMcpPingTool(),
       ...createWebMcpTools(store, { onMutation }).map(instrumentWebMcpTool),
     ];
 
