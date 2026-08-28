@@ -1,5 +1,3 @@
-import type { WorkspaceStore } from "@/application/workspace-store";
-
 export type WebMcpDiagnosticPhase =
   | "registered"
   | "invocation-entered"
@@ -67,8 +65,18 @@ function validateSimpleObjectSchema(schema: unknown, rawInput: unknown): boolean
     const value = objectInput[key];
     if (property.type === "string" && typeof value !== "string") return false;
     if (property.type === "number" && typeof value !== "number") return false;
-    if (property.type === "integer" && (!Number.isInteger(value) || typeof value !== "number")) return false;
-    if (property.type === "object" && (typeof value !== "object" || value === null || Array.isArray(value))) return false;
+    if (
+      property.type === "integer" &&
+      (typeof value !== "number" || !Number.isInteger(value))
+    ) {
+      return false;
+    }
+    if (
+      property.type === "object" &&
+      (typeof value !== "object" || value === null || Array.isArray(value))
+    ) {
+      return false;
+    }
   }
   return true;
 }
@@ -98,9 +106,7 @@ const MUTATING_TOOLS = new Set([
   "copy_change_between_shadows",
 ]);
 
-export function createWebMcpPingTool(
-  store: Pick<WorkspaceStore, "getSnapshot">,
-): WebMCP.ModelContextTool {
+export function createWebMcpPingTool(): WebMCP.ModelContextTool {
   return {
     name: "webmcp_ping",
     title: "WebMCP ping",
@@ -123,11 +129,9 @@ export function createWebMcpPingTool(
         phase: "validated-input",
         status: "ok",
       });
-      const realityVersion = store.getSnapshot().workspace.reality.version;
       const result = {
         ok: true,
         message: "SHADOW WebMCP is alive",
-        realityVersion,
       };
       recordWebMcpDiagnostic({
         tool: "webmcp_ping",
