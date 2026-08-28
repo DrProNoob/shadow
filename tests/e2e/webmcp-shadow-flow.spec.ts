@@ -45,34 +45,44 @@ test("WebMCP tools mutate only the visible Shadow through the shared store", asy
     const tools = new Map(
       registrations.map(({ tool }) => [tool.name, tool] as const),
     );
-    const execute = async (name: string, input: Record<string, unknown>) => {
+    const executeWithoutOptions = async (
+      name: string,
+      input: Record<string, unknown>,
+    ) => {
       const tool = tools.get(name);
       if (!tool) throw new Error(`Missing registered tool ${name}`);
-      return tool.execute(input, { signal: new AbortController().signal });
+      const execute = tool.execute as unknown as (
+        input: Record<string, unknown>,
+      ) => Promise<unknown>;
+      return execute(input);
     };
 
-    const begun = (await execute("begin_shadow", {
+    const ping = await executeWithoutOptions("webmcp_ping", {});
+    const summary = await executeWithoutOptions("get_company_summary", {});
+    const begun = (await executeWithoutOptions("begin_shadow", {
       name: "WebMCP Conservative",
       strategy: "conservative",
     })) as { ok: true; data: { shadowId: string } };
     const shadowId = begun.data.shadowId;
-    const staged = (await execute("stage_seat_change", {
+    const staged = (await executeWithoutOptions("stage_seat_change", {
       shadowId,
       subscriptionId: "subscription-adobe",
       seatCount: 17,
     })) as { ok: true; data: { change: { changeId: string } } };
-    const invalid = await execute("stage_seat_change", {
+    const invalid = await executeWithoutOptions("stage_seat_change", {
       shadowId,
       subscriptionId: "subscription-adobe",
       seatCount: -1,
     });
-    const proof = await execute("get_change_proof", {
+    const proof = await executeWithoutOptions("get_change_proof", {
       shadowId,
       changeId: staged.data.change.changeId,
     });
 
     return {
       names: Array.from(tools.keys()),
+      ping,
+      summary,
       begun,
       staged,
       invalid,
@@ -81,6 +91,7 @@ test("WebMCP tools mutate only the visible Shadow through the shared store", asy
   });
 
   expect(result.names).toEqual([
+    "webmcp_ping",
     "get_company_summary",
     "list_subscriptions",
     "get_subscription_context",
@@ -96,6 +107,14 @@ test("WebMCP tools mutate only the visible Shadow through the shared store", asy
     "compare_shadows",
   ]);
   expect(result.names.some((name) => name.includes("commit"))).toBe(false);
+  expect(result.ping).toEqual({
+    ok: true,
+    message: "SHADOW WebMCP is alive",
+  });
+  expect(result.summary).toMatchObject({
+    ok: true,
+    data: { companyName: "ORBIT", realityVersion: 1 },
+  });
   expect(result.invalid).toMatchObject({
     ok: false,
     error: { code: "INVALID_ARGUMENTS" },
@@ -114,6 +133,12 @@ test("WebMCP tools mutate only the visible Shadow through the shared store", asy
   ).toBeVisible();
   await expect(page.getByText("−$3,680/mo", { exact: true })).toBeVisible();
   await expect(page.getByText("webmcp", { exact: true }).first()).toBeVisible();
+  await expect(page.getByTestId("webmcp-diagnostics")).toContainText(
+    "stage_seat_change",
+  );
+  await expect(page.getByTestId("webmcp-diagnostics")).toContainText(
+    "result-returned",
+  );
 
   await page
     .getByRole("button", { name: "WebMCP Conservative · based on v1" })
