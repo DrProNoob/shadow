@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - debug/webmcp-invocation-boundary
+  pull_request:
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
