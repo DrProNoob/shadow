@@ -4,6 +4,10 @@ import { useEffect, useState } from "react";
 import type { WorkspaceStore } from "@/application/workspace-store";
 import { registerWebMcpTools } from "@/webmcp/browser-adapter";
 import {
+  createWebMcpPingTool,
+  instrumentWebMcpTool,
+} from "@/webmcp/diagnostics";
+import {
   createWebMcpTools,
   type WebMcpMutationEvent,
 } from "@/webmcp/tool-catalog";
@@ -21,9 +25,10 @@ export function useWebMcpRegistrar(
     if (!hydrated) return;
     const controller = new AbortController();
     let current = true;
-    const tools = createWebMcpTools(store, {
-      onMutation,
-    });
+    const tools = [
+      createWebMcpPingTool(store),
+      ...createWebMcpTools(store, { onMutation }).map(instrumentWebMcpTool),
+    ];
 
     registerWebMcpTools(tools, controller.signal)
       .then((result) => {
