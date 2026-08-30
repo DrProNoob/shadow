@@ -123,8 +123,8 @@ function validatedTool<TSchema extends z.ZodType, TOutput>(
   return {
     ...definition,
     inputSchema: toWebMcpJsonSchema(schema),
-    execute: async (rawInput, { signal }) => {
-      if (signal.aborted) {
+    execute: async (rawInput, options) => {
+      if (options?.signal?.aborted) {
         return expectedFailure(
           "TOOL_ABORTED",
           "The tool call was cancelled before it changed state.",
