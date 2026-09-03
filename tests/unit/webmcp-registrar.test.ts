@@ -43,6 +43,7 @@ describe("useWebMcpRegistrar", () => {
       await waitFor(() => expect(result.current).toBe("ready"));
       expect(activeTools).toEqual(
         new Set([
+          "webmcp_ping",
           "get_company_summary",
           "list_subscriptions",
           "get_subscription_context",

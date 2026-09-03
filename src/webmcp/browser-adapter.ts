@@ -1,3 +1,5 @@
+import { recordWebMcpDiagnostic } from "@/webmcp/diagnostics";
+
 export type RegistrationResult = "ready" | "unavailable";
 
 export type WebMcpRegistrationTarget = Pick<
@@ -29,6 +31,11 @@ export async function registerWebMcpTools(
   for (const tool of tools) {
     if (signal.aborted) return "unavailable";
     await target.registerTool(tool, { signal });
+    recordWebMcpDiagnostic({
+      tool: tool.name,
+      phase: "registered",
+      status: "ok",
+    });
   }
   return signal.aborted ? "unavailable" : "ready";
 }
