@@ -160,43 +160,7 @@ For Chrome testing, consult the official [DevTools WebMCP guide](https://develop
 
 WebMCP is an evolving [Draft Community Group Report](https://webmachinelearning.github.io/webmcp/). As of the scenario build on **August 28, 2026**, the supported integration is imperative, top-level registration; do not rely on declarative tools or iframe discovery in ChatGPT. Browser/app and model rollout can vary. Recheck the official [Chrome imperative API](https://developer.chrome.com/docs/ai/webmcp/imperative-api) and [OpenAI site-tools documentation](https://learn.chatgpt.com/docs/webmcp), then record the exact tested versions and flags before filming.
 
-## Three-minute demo script
 
-Target runtime: **2:45**, leaving 15 seconds of capture/editing margin.
-
-| Time      | Story beat                                                                                                |
-| --------- | --------------------------------------------------------------------------------------------------------- |
-| 0:00-0:15 | Reset. Introduce Reality at $184,300/month and the rule: agents may stage futures; only a human commits.  |
-| 0:15-0:45 | Run the canonical prompt. Show WebMCP reading subscriptions, usage, contracts, and dependencies.          |
-| 0:45-1:10 | Reveal Conservative and Aggressive. Switch context to prove Reality still reads $184,300.                 |
-| 1:10-1:30 | Open one Proof and show observable evidence, impact, and constraint checks—not chain-of-thought.          |
-| 1:30-1:55 | Compare futures side by side: 16.4%/Low versus 22.5%/Medium, with zero active Engineering users affected. |
-| 1:55-2:15 | Fork Conservative and copy Aggressive's Figma change to produce Hybrid at $442,980 annual savings.        |
-| 2:15-2:40 | Human reviews and commits Hybrid. Show Reality v2 and deterministic `receipt-001`.                        |
-| 2:40-2:45 | Close: “Version control for AI actions on the web.”                                                       |
-
-If the live agent is unstable, use **Load example futures** and state clearly that this is the deterministic replay fallback.
-
-## Deployment and submission checklist
-
-Current readiness is intentionally reported without claiming an unverified live integration:
-
-- [x] Deterministic domain, executor, catalog, cleanup, atomicity, and no-commit-boundary tests.
-- [x] Playwright coverage with a fake `ModelContext`, plus the development Tool Lab path.
-- [ ] Manual Chrome DevTools WebMCP discovery/execution on the final HTTPS deployment.
-- [ ] Canonical prompt rehearsal in ChatGPT's built-in browser on the final deployment.
-- [ ] Final browser/app versions, flags, live URL, repository URL, and video recorded.
-
-- [ ] Use a public Git repository and keep the visible MIT `LICENSE` file.
-- [ ] Run `npm ci`, typecheck, lint, unit tests, Playwright, format check, and production build from Node 24.
-- [ ] Deploy the verified commit to Vercel over HTTPS; no secrets or environment variables are required.
-- [ ] Smoke-test reset, manual replay, Hybrid commit, Reality v2, and receipt history on the deployed URL.
-- [ ] Verify discovery and execution of all 13 tools; verify again that no commit/Reality-write tool exists.
-- [ ] Rehearse the canonical prompt in the exact ChatGPT desktop and Chrome versions used for capture.
-- [ ] Record those versions, relevant flags, public repository URL, and live deployment URL in the submission.
-- [ ] Record a public demo video under three minutes, including both WebMCP leverage and the human commit boundary.
-- [ ] Tag the final verified commit and freeze the submitted repository and deployment during judging.
-- [ ] Review the current [challenge requirements](https://webmcp.devpost.com/) and [resources/FAQ](https://webmcp.devpost.com/resources) immediately before submission.
 
 ## Known MVP limits
 
